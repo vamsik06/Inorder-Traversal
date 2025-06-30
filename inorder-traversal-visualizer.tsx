@@ -49,18 +49,45 @@ const createSampleTree = (): TreeNode => {
   }
 }
 
-// Calculate positions for tree nodes
-const calculatePositions = (node: TreeNode | undefined, x: number, y: number, spacing: number): void => {
-  if (!node) return
+// Helper to collect all nodes
+function collectNodes(node: TreeNode | undefined, arr: TreeNode[] = []): TreeNode[] {
+  if (!node) return arr;
+  arr.push(node);
+  if (node.left) collectNodes(node.left, arr);
+  if (node.right) collectNodes(node.right, arr);
+  return arr;
+}
 
-  node.x = x
-  node.y = y
+// Helper to shift all nodes by dx
+function shiftNodesX(node: TreeNode | undefined, dx: number): void {
+  if (!node) return;
+  node.x = (node.x || 0) + dx;
+  if (node.left) shiftNodesX(node.left, dx);
+  if (node.right) shiftNodesX(node.right, dx);
+}
+
+// Calculate positions for tree nodes and shift if needed
+const calculatePositions = (node: TreeNode | undefined, x: number, y: number, spacing: number): void => {
+  if (!node) return;
+
+  node.x = x;
+  node.y = y;
 
   if (node.left) {
-    calculatePositions(node.left, x - spacing, y + 70, spacing / 1.5)
+    calculatePositions(node.left, x - spacing, y + 70, spacing / 1.5);
   }
   if (node.right) {
-    calculatePositions(node.right, x + spacing, y + 70, spacing / 1.5)
+    calculatePositions(node.right, x + spacing, y + 70, spacing / 1.5);
+  }
+
+  // After all positions are set, shift if needed
+  if (y === 50) { // Only do this at the root call
+    const nodes = collectNodes(node);
+    const minX = Math.min(...nodes.map(n => n.x || 0));
+    const margin = 20;
+    if (minX < margin) {
+      shiftNodesX(node, margin - minX);
+    }
   }
 }
 
@@ -119,7 +146,7 @@ const generateRandomTree = (): TreeNode => {
 export default function InorderTraversalVisualizer() {
   const [tree, setTree] = useState(() => {
     const sampleTree = createSampleTree()
-    calculatePositions(sampleTree, 300, 50, 140)
+    calculatePositions(sampleTree, 400, 50, 140)
     return sampleTree
   })
 
@@ -137,7 +164,7 @@ export default function InorderTraversalVisualizer() {
 
   const generateNewTree = () => {
     const newTree = generateRandomTree()
-    calculatePositions(newTree, 300, 50, 140)
+    calculatePositions(newTree, 400, 50, 140)
     setTree(newTree)
     setSteps(generateInorderSteps(newTree))
     setCurrentStep(-1)
@@ -279,7 +306,7 @@ export default function InorderTraversalVisualizer() {
             {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </Button>
         </CardHeader>
-        <CardContent className="space-y-2">
+        <CardContent className="space-y-2 overflow-auto max-h-screen">
           {/* Controls */}
           <div className="flex flex-wrap justify-center gap-3 mb-5">
             <Button 
@@ -343,7 +370,7 @@ export default function InorderTraversalVisualizer() {
           <div className={`rounded-lg p-2 mb-2 transition-colors duration-300 overflow-auto max-h-96 ${
             isDarkMode ? "bg-gray-900" : "bg-gray-100"
           }`}>
-            <svg width="800" height="400" viewBox="0 0 800 400" className="mx-auto">
+            <svg width="1000" height="400" viewBox="0 0 1000 400" className="mx-auto">
               {renderNode(tree)}
             </svg>
           </div>
