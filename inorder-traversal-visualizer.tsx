@@ -251,7 +251,7 @@ export default function InorderTraversalVisualizer() {
 
   return (
     <div
-      className={`w-full mx-auto p-2 space-y-3 min-h-screen transition-colors duration-300 ${
+      className={`w-full mx-auto space-y-2 min-h-screen transition-colors duration-300 ${
         isDarkMode ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
       }`}
     >
@@ -260,7 +260,7 @@ export default function InorderTraversalVisualizer() {
           ? "bg-gray-800 border-gray-700 text-white" 
           : "bg-white border-gray-200 text-gray-900"
       }`}>
-        <CardHeader className="pb-2 relative">
+        <CardHeader className="pb-1 relative">
           <CardTitle className={`text-lg font-bold text-center transition-colors duration-300 ${
             isDarkMode ? "text-white" : "text-gray-900"
           }`}>
@@ -279,7 +279,7 @@ export default function InorderTraversalVisualizer() {
             {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </Button>
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent className="space-y-2">
           {/* Controls */}
           <div className="flex flex-wrap justify-center gap-3 mb-5">
             <Button 
@@ -340,16 +340,16 @@ export default function InorderTraversalVisualizer() {
           </div>
 
           {/* Tree Visualization */}
-          <div className={`rounded-lg p-3 mb-3 transition-colors duration-300 ${
+          <div className={`rounded-lg p-2 mb-2 transition-colors duration-300 overflow-auto max-h-96 ${
             isDarkMode ? "bg-gray-900" : "bg-gray-100"
           }`}>
-            <svg width="100%" height="400" viewBox="0 0 600 400" className="mx-auto min-w-[600px]">
+            <svg width="800" height="400" viewBox="0 0 800 400" className="mx-auto">
               {renderNode(tree)}
             </svg>
           </div>
 
           {/* Legend */}
-          <div className="flex flex-wrap justify-center gap-6 mb-3">
+          <div className="flex flex-wrap justify-center gap-6 mb-2">
             <div className="flex items-center gap-2">
               <div className={`w-4 h-4 rounded-full border-2 transition-colors duration-300 ${
                 isDarkMode 
@@ -370,7 +370,7 @@ export default function InorderTraversalVisualizer() {
 
           {/* Traversal Result */}
           <div
-            className={`border rounded-lg p-3 transition-colors duration-300 ${
+            className={`border rounded-lg p-2 transition-colors duration-300 ${
               isDarkMode 
                 ? "bg-gray-800 border-gray-600" 
                 : "bg-green-50 border-green-200"
