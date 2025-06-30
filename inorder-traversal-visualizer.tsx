@@ -281,12 +281,18 @@ export default function InorderTraversalVisualizer() {
         </CardHeader>
         <CardContent className="space-y-3">
           {/* Controls */}
-          <div className="flex flex-wrap justify-center gap-3 mb-3">
+          <div className="flex flex-wrap justify-center gap-3 mb-5">
             <Button 
               onClick={togglePlay} 
-              variant={isPlaying ? "destructive" : "default"} 
+              variant={isPlaying ? "destructive" : "outline"} 
               size="sm"
-              className="transition-colors duration-300"
+              className={`transition-colors duration-300 ${
+                isPlaying 
+                  ? "" 
+                  : isDarkMode 
+                    ? "border-black text-black hover:bg-gray-100" 
+                    : "border-black bg-black text-white hover:bg-gray-800"
+              }`}
             >
               {isPlaying ? <Pause className="w-4 h-4 mr-2" /> : <Play className="w-4 h-4 mr-2" />}
               {isPlaying ? "Pause" : "Play"}
@@ -298,7 +304,7 @@ export default function InorderTraversalVisualizer() {
               size="sm"
               className={`transition-colors duration-300 ${
                 isDarkMode 
-                  ? "border-white text-black hover:bg-white hover:text-gray-900" 
+                  ? "border-black text-black hover:bg-white hover:text-black" 
                   : "border-gray-300 text-gray-900 hover:bg-gray-100"
               }`}
             >
@@ -311,7 +317,7 @@ export default function InorderTraversalVisualizer() {
               size="sm"
               className={`transition-colors duration-300 ${
                 isDarkMode 
-                  ? "border-white text-black hover:bg-white hover:text-gray-900" 
+                  ? "border-black text-black hover:bg-white hover:text-black" 
                   : "border-gray-300 text-gray-900 hover:bg-gray-100"
               }`}
             >
@@ -324,8 +330,8 @@ export default function InorderTraversalVisualizer() {
               size="sm"
               className={`transition-colors duration-300 ${
                 isDarkMode 
-                  ? "border-white text-black hover:bg-white hover:text-gray-900" 
-                  : "border-gray-300 hover:bg-gray-100"
+                  ? "border-black text-black hover:bg-white hover:text-black" 
+                  : "border-gray-300 text-gray-900 hover:bg-gray-100"
               }`}
             >
               <RotateCcw className="w-4 h-4 mr-2" />
