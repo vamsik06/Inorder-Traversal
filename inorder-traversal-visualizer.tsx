@@ -188,15 +188,19 @@ export default function InorderTraversalVisualizer() {
     if (!node || !node.x || !node.y) return null
 
     const isVisited = visitedNodes.has(node.id)
+    const lineColor = isDarkMode ? "#374151" : "#e5e7eb"
+    const unvisitedFill = isDarkMode ? "#1f2937" : "#f3f4f6"
+    const unvisitedStroke = isDarkMode ? "#4b5563" : "#d1d5db"
+    const textColor = isVisited ? "white" : (isDarkMode ? "#e5e7eb" : "#374151")
 
     return (
       <g key={node.id}>
         {/* Render connections to children */}
         {node.left && node.left.x && node.left.y && (
-          <line x1={node.x} y1={node.y} x2={node.left.x} y2={node.left.y} stroke="#e5e7eb" strokeWidth="2" />
+          <line x1={node.x} y1={node.y} x2={node.left.x} y2={node.left.y} stroke={lineColor} strokeWidth="2" />
         )}
         {node.right && node.right.x && node.right.y && (
-          <line x1={node.x} y1={node.y} x2={node.right.x} y2={node.right.y} stroke="#e5e7eb" strokeWidth="2" />
+          <line x1={node.x} y1={node.y} x2={node.right.x} y2={node.right.y} stroke={lineColor} strokeWidth="2" />
         )}
 
         {/* Render node circle */}
@@ -204,8 +208,8 @@ export default function InorderTraversalVisualizer() {
           cx={node.x}
           cy={node.y}
           r="25"
-          fill={isVisited ? "#22c55e" : "#f3f4f6"}
-          stroke={isVisited ? "#16a34a" : "#d1d5db"}
+          fill={isVisited ? "#22c55e" : unvisitedFill}
+          stroke={isVisited ? "#16a34a" : unvisitedStroke}
           strokeWidth="3"
           className="transition-all duration-300"
         />
@@ -216,7 +220,7 @@ export default function InorderTraversalVisualizer() {
           y={node.y + 5}
           textAnchor="middle"
           className="text-lg font-semibold"
-          fill={isVisited ? "white" : "#374151"}
+          fill={textColor}
         >
           {node.value}
         </text>
@@ -247,18 +251,30 @@ export default function InorderTraversalVisualizer() {
 
   return (
     <div
-      className={`w-full mx-auto p-2 space-y-3 h-[600px]`}
+      className={`w-full mx-auto p-2 space-y-3 min-h-screen transition-colors duration-300 ${
+        isDarkMode ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
+      }`}
     >
-      <Card className={isDarkMode ? "bg-black border-gray-600" : "bg-white"}>
+      <Card className={`transition-colors duration-300 ${
+        isDarkMode 
+          ? "bg-gray-800 border-gray-700 text-white" 
+          : "bg-white border-gray-200 text-gray-900"
+      }`}>
         <CardHeader className="pb-2 relative">
-          <CardTitle className={`text-lg font-bold text-center ${isDarkMode ? "text-white" : "text-gray-900"}`}>
+          <CardTitle className={`text-lg font-bold text-center transition-colors duration-300 ${
+            isDarkMode ? "text-white" : "text-gray-900"
+          }`}>
             Inorder Traversal
           </CardTitle>
           <Button 
             onClick={toggleDarkMode} 
             variant="ghost" 
             size="sm"
-            className={`absolute top-2 right-2 p-2 h-8 w-8 ${isDarkMode ? "text-white hover:bg-gray-800" : "text-gray-900 hover:bg-gray-100"}`}
+            className={`absolute top-2 right-2 p-2 h-8 w-8 transition-colors duration-300 ${
+              isDarkMode 
+                ? "text-white hover:bg-gray-700" 
+                : "text-gray-900 hover:bg-gray-100"
+            }`}
           >
             {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </Button>
@@ -266,26 +282,61 @@ export default function InorderTraversalVisualizer() {
         <CardContent className="space-y-3">
           {/* Controls */}
           <div className="flex flex-wrap justify-center gap-3 mb-3">
-            <Button onClick={togglePlay} variant={isPlaying ? "destructive" : "default"} size="sm">
+            <Button 
+              onClick={togglePlay} 
+              variant={isPlaying ? "destructive" : "default"} 
+              size="sm"
+              className="transition-colors duration-300"
+            >
               {isPlaying ? <Pause className="w-4 h-4 mr-2" /> : <Play className="w-4 h-4 mr-2" />}
               {isPlaying ? "Pause" : "Play"}
             </Button>
-            <Button onClick={nextStep} disabled={currentStep >= steps.length - 1} size="sm">
+            <Button 
+              onClick={nextStep} 
+              disabled={currentStep >= steps.length - 1} 
+              variant="outline"
+              size="sm"
+              className={`transition-colors duration-300 ${
+                isDarkMode 
+                  ? "border-white text-black hover:bg-white hover:text-gray-900" 
+                  : "border-gray-300 text-gray-900 hover:bg-gray-100"
+              }`}
+            >
               <SkipForward className="w-4 h-4 mr-2" />
               Next Step
             </Button>
-            <Button onClick={generateNewTree} variant="outline" size="sm">
+            <Button 
+              onClick={generateNewTree} 
+              variant="outline" 
+              size="sm"
+              className={`transition-colors duration-300 ${
+                isDarkMode 
+                  ? "border-white text-black hover:bg-white hover:text-gray-900" 
+                  : "border-gray-300 text-gray-900 hover:bg-gray-100"
+              }`}
+            >
               <Shuffle className="w-4 h-4 mr-2" />
               Random
             </Button>
-            <Button onClick={reset} variant="outline" size="sm">
+            <Button 
+              onClick={reset} 
+              variant="outline" 
+              size="sm"
+              className={`transition-colors duration-300 ${
+                isDarkMode 
+                  ? "border-white text-black hover:bg-white hover:text-gray-900" 
+                  : "border-gray-300 hover:bg-gray-100"
+              }`}
+            >
               <RotateCcw className="w-4 h-4 mr-2" />
               Reset
             </Button>
           </div>
 
           {/* Tree Visualization */}
-          <div className={`rounded-lg p-3 mb-3 ${isDarkMode ? "bg-black" : "bg-gray-100"}`}>
+          <div className={`rounded-lg p-3 mb-3 transition-colors duration-300 ${
+            isDarkMode ? "bg-gray-900" : "bg-gray-100"
+          }`}>
             <svg width="100%" height="350" viewBox="0 0 600 350" className="mx-auto min-w-[600px]">
               {renderNode(tree)}
             </svg>
@@ -294,28 +345,52 @@ export default function InorderTraversalVisualizer() {
           {/* Legend */}
           <div className="flex flex-wrap justify-center gap-6 mb-3">
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded-full bg-gray-200 border-2 border-gray-300"></div>
-              <span className={`text-sm ${isDarkMode ? "text-gray-300" : "text-gray-700"}`}>Unvisited</span>
+              <div className={`w-4 h-4 rounded-full border-2 transition-colors duration-300 ${
+                isDarkMode 
+                  ? "bg-gray-700 border-gray-500" 
+                  : "bg-gray-200 border-gray-300"
+              }`}></div>
+              <span className={`text-sm transition-colors duration-300 ${
+                isDarkMode ? "text-gray-300" : "text-gray-700"
+              }`}>Unvisited</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 rounded-full bg-green-500 border-2 border-green-600"></div>
-              <span className={`text-sm ${isDarkMode ? "text-gray-300" : "text-gray-700"}`}>Visited</span>
+              <span className={`text-sm transition-colors duration-300 ${
+                isDarkMode ? "text-gray-300" : "text-gray-700"
+              }`}>Visited</span>
             </div>
           </div>
 
           {/* Traversal Result */}
           <div
-            className={`border rounded-lg p-3 ${isDarkMode ? "bg-black border-gray-600" : "bg-green-50 border-green-200"}`}
+            className={`border rounded-lg p-3 transition-colors duration-300 ${
+              isDarkMode 
+                ? "bg-gray-800 border-gray-600" 
+                : "bg-green-50 border-green-200"
+            }`}
           >
-            <h3 className={`font-semibold mb-2 ${isDarkMode ? "text-white" : "text-green-900"}`}>
+            <h3 className={`font-semibold mb-2 transition-colors duration-300 ${
+              isDarkMode ? "text-white" : "text-green-900"
+            }`}>
               Inorder Traversal Result:
             </h3>
             <div className="flex flex-wrap gap-2">
               {traversalResult.length === 0 ? (
-                <span className={isDarkMode ? "text-gray-300" : "text-green-600"}>No nodes visited yet</span>
+                <span className={`transition-colors duration-300 ${
+                  isDarkMode ? "text-gray-300" : "text-green-600"
+                }`}>No nodes visited yet</span>
               ) : (
                 traversalResult.map((value, index) => (
-                  <Badge key={index} variant="secondary" className="text-lg px-3 py-1">
+                  <Badge 
+                    key={index} 
+                    variant="secondary" 
+                    className={`text-lg px-3 py-1 transition-colors duration-300 ${
+                      isDarkMode 
+                        ? "bg-blue-600 text-white hover:bg-blue-700" 
+                        : "bg-gray-200 text-gray-900 hover:bg-gray-300"
+                    }`}
+                  >
                     {value}
                   </Badge>
                 ))
