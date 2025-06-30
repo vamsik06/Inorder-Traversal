@@ -57,10 +57,10 @@ const calculatePositions = (node: TreeNode | undefined, x: number, y: number, sp
   node.y = y
 
   if (node.left) {
-    calculatePositions(node.left, x - spacing, y + 80, spacing / 2)
+    calculatePositions(node.left, x - spacing, y + 70, spacing / 1.5)
   }
   if (node.right) {
-    calculatePositions(node.right, x + spacing, y + 80, spacing / 2)
+    calculatePositions(node.right, x + spacing, y + 70, spacing / 1.5)
   }
 }
 
@@ -87,19 +87,19 @@ const generateInorderSteps = (
   return steps
 }
 
-// Generate a random tree with depth 3 and max 7 nodes
+// Generate a random tree with depth 4 and max 15 nodes
 const generateRandomTree = (): TreeNode => {
-  const nodes = [1, 2, 3, 4, 5, 6, 7]
+  const nodes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
   const shuffled = [...nodes].sort(() => Math.random() - 0.5)
   
-  // Create a tree structure with depth 3 and max 7 nodes
+  // Create a tree structure with depth 4 and max 15 nodes
   const createNode = (value: number, depth: number): TreeNode => {
     const node: TreeNode = {
       value,
       id: value.toString(),
     }
     
-    if (depth < 3 && shuffled.length > 0) {
+    if (depth < 4 && shuffled.length > 0) {
       // 70% chance to add left child
       if (Math.random() < 0.7 && shuffled.length > 0) {
         node.left = createNode(shuffled.shift()!, depth + 1)
@@ -207,19 +207,19 @@ export default function InorderTraversalVisualizer() {
         <circle
           cx={node.x}
           cy={node.y}
-          r="25"
+          r="15"
           fill={isVisited ? "#22c55e" : unvisitedFill}
           stroke={isVisited ? "#16a34a" : unvisitedStroke}
-          strokeWidth="3"
+          strokeWidth="2"
           className="transition-all duration-300"
         />
 
         {/* Render node value */}
         <text
           x={node.x}
-          y={node.y + 5}
+          y={node.y + 3}
           textAnchor="middle"
-          className="text-lg font-semibold"
+          className="text-xs font-semibold"
           fill={textColor}
         >
           {node.value}
@@ -291,7 +291,7 @@ export default function InorderTraversalVisualizer() {
                   ? "" 
                   : isDarkMode 
                     ? "border-black text-black hover:bg-gray-100" 
-                    : "border-black bg-black text-white hover:bg-gray-800"
+                    : "border-black bg-black text-white"
               }`}
             >
               {isPlaying ? <Pause className="w-4 h-4 mr-2" /> : <Play className="w-4 h-4 mr-2" />}
@@ -343,7 +343,7 @@ export default function InorderTraversalVisualizer() {
           <div className={`rounded-lg p-3 mb-3 transition-colors duration-300 ${
             isDarkMode ? "bg-gray-900" : "bg-gray-100"
           }`}>
-            <svg width="100%" height="350" viewBox="0 0 600 350" className="mx-auto min-w-[600px]">
+            <svg width="100%" height="400" viewBox="0 0 600 400" className="mx-auto min-w-[600px]">
               {renderNode(tree)}
             </svg>
           </div>
