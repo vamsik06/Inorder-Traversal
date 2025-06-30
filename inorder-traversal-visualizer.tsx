@@ -394,7 +394,7 @@ export default function InorderTraversalVisualizer() {
                     className={`text-lg px-3 py-1 transition-colors duration-300 ${
                       isDarkMode 
                         ? "bg-blue-600 text-white hover:bg-blue-700" 
-                        : "bg-gray-200 text-gray-900 hover:bg-gray-300"
+                        : "bg-blue-600 text-white hover:bg-blue-700"
                     }`}
                   >
                     {value}
